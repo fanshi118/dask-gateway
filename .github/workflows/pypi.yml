@@ -23,7 +23,9 @@ jobs:
       - name: Build dask-gateway as an sdist and a bdist_wheel
         run: |
           cd dask-gateway
-          python setup.py sdist bdist_wheel
+          python setup.py sdist
+          ls
+          python setup.py bdist_wheel -d dist
           cd ..
       - name: Build dask-gateway-server as an sdist and a bdist_wheel
         run: |
