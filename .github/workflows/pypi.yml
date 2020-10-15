@@ -20,26 +20,22 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.8"
-      - name: Build dask-gateway as an sdist and a bdist_wheel
+      - name: Build dask-gateway as an sdist
         run: |
           cd dask-gateway
           python setup.py sdist
-          ls
-          python setup.py bdist_wheel -d dist
           cd ..
-      - name: Build dask-gateway-server as an sdist and a bdist_wheel
+      - name: Build dask-gateway-server as an sdist
         run: |
           cd dask-gateway-server
           python setup.py sdist
-          python build_tools/build_macos.py
-          python build_tools/build_manylinux.py
           cd ..
       - name: Check the sdist installs and imports
         run: |
           mkdir -p test-sdist
           cd test-sdist
           python -m venv venv-sdist
-          venv-sdist/bin/python -m pip install ../dist/dask-gateway-*.tar.gz
+          venv-sdist/bin/python -m pip install ../dask-gateway/dist/dask-gateway-*.tar.gz
           venv-sdist/bin/python -c "import dask_gateway;print(dask_gateway.__version__)"
       - uses: actions/upload-artifact@v2
         with:
