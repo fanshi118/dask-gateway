@@ -54,6 +54,7 @@ jobs:
         run: |
           cd dask-gateway-server
           python setup.py sdist
+          pip install wheel
           python build_tools/build_macos.py
           python build_tools/build_manylinux.py
           cd ..
