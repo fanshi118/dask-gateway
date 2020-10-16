@@ -16,9 +16,6 @@ ls *.whl | xargs -n1 --verbose auditwheel repair --wheel-dir /dist
 ls -al /dist
 """
 
-print(type(os.path.abspath(__file__)), os.path.abspath(__file__))
-print(type(os.path.dirname(os.path.abspath(__file__))), os.path.dirname(os.path.abspath(__file__)))
-print(type(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PACKAGE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST_DIR = os.path.join(PACKAGE_DIR, "dist")
 
