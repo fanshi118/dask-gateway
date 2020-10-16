@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build source distribution
+    name: Build source distribution - dask-gateway
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,6 +27,29 @@ jobs:
           pip install wheel
           python setup.py bdist_wheel
           cd ..
+      - name: Check the sdist installs and imports
+        run: |
+          mkdir -p test-sdist
+          cd test-sdist
+          python -m venv venv-sdist
+          venv-sdist/bin/python -m pip install ../dask-gateway/dist/dask-gateway-*.tar.gz
+          venv-sdist/bin/python -c "import dask_gateway;print(dask_gateway.__version__)"
+          cd ..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: artifact_dask-gateway
+          path: dask-gateway/dist/*
+
+  build:
+    name: Build source distribution - dask-gateway-server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
       - name: Build dask-gateway-server as an sdist and a bdist_wheel
         run: |
           cd dask-gateway-server
@@ -39,13 +62,13 @@ jobs:
           mkdir -p test-sdist
           cd test-sdist
           python -m venv venv-sdist
-          venv-sdist/bin/python -m pip install ../dask-gateway/dist/dask-gateway-*.tar.gz
-          venv-sdist/bin/python -c "import dask_gateway;print(dask_gateway.__version__)"
+          venv-sdist/bin/python -m pip install ../dask-gateway-server/dist/dask-gateway-server-*.tar.gz
+          venv-sdist/bin/python -c "import dask_gateway_server;print(dask_gateway_server.__version__)"
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: artifact
-          path: dask-gateway/dist/*
+          name: artifact_dask-gateway-server
+          path: dask-gateway-server/dist/*
 
   upload_pypi:
     name: Upload to PyPI on release
