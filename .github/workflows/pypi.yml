@@ -37,7 +37,7 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: artifact_dask-gateway
+          name: artifact_gateway
           path: dask-gateway/dist/*
 
   build_gateway_server:
@@ -67,19 +67,34 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: artifact_dask-gateway-server
+          name: artifact_gateway_server
           path: dask-gateway-server/dist/*
 
   upload_pypi:
     name: Upload to PyPI on release
-    needs: [build]
+    needs: [build_gateway]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: artifact
+          name: artifact_gateway
           path: dask-gateway/dist
+      - uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_secret }}
+
+  upload_pypi:
+    name: Upload to PyPI on release
+    needs: [build_gateway_server]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact_gateway_server
+          path: dask-gateway-server/dist
       - uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
