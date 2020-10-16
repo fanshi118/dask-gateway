@@ -71,7 +71,7 @@ jobs:
           path: dask-gateway-server/dist/*
 
   upload_pypi:
-    name: Upload to PyPI on release
+    name: Upload to PyPI on release - dask-gateway
     needs: [build_gateway]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
@@ -85,8 +85,8 @@ jobs:
           user: __token__
           password: ${{ secrets.pypi_secret }}
 
-  upload_pypi:
-    name: Upload to PyPI on release
+  upload_pypi_server:
+    name: Upload to PyPI on release - dask-gateway-server
     needs: [build_gateway_server]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
