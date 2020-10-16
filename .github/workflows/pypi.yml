@@ -10,7 +10,7 @@ on:
     types: [published]
 
 jobs:
-  build:
+  build_gateway:
     name: Build source distribution - dask-gateway
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,7 @@ jobs:
           name: artifact_dask-gateway
           path: dask-gateway/dist/*
 
-  build:
+  build_gateway_server:
     name: Build source distribution - dask-gateway-server
     runs-on: ubuntu-latest
     steps:
